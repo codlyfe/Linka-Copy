@@ -1,0 +1,11 @@
+{
+  "title": "Test Listing",
+  "description": "This is a test listing",
+  "price": 100.00,
+  "categoryId": 1,
+  "listingType": "SELL",
+  "conditionType": "NEW",
+  "location": "Kampala",
+  "contactName": "Jane Smith",
+  "contactPhone": "+256700000003"
+}

@@ -1,0 +1,70 @@
+{
+  // Terminal Configuration
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "icon": "terminal-console"
+    }
+  },
+  
+  // Disable other terminal profiles except PowerShell
+  "terminal.integrated.enabledProfiles.windows": [
+    "PowerShell"
+  ],
+  
+  // Force PowerShell as default shell for integrated terminal
+  "terminal.integrated.shell.windows": "powershell.exe",
+  
+  // Terminal appearance
+  "terminal.integrated.fontFamily": "Cascadia Code, Fira Code, Consolas, monospace",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.lineHeight": 1.4,
+  
+  // Terminal behavior
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.tabs.enabled": true,
+  "terminal.integrated.tabs.location": "right",
+  
+  // Task configuration - only PowerShell tasks
+  "tasks.version": "2.0.0",
+  "tasks.defaultLocation": "workspace",
+  
+  // Auto-save configuration
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  
+  // Disable confirmation for terminal operations
+  "terminal.integrated.confirmOnExit": "never",
+  "terminal.integrated.confirmOnKill": "never",
+  
+  // Windows-specific settings
+  "files.eol": "\r\n",
+  "editor.lineNumbers": "on",
+  "editor.rulers": [80, 120],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  
+  // Disable other shell integrations
+  "terminal.integrated.shellIntegration.enabled": true,
+  "terminal.integrated.shellIntegration.history": 100,
+  
+  // PowerShell specific settings
+  "powershell.integratedConsole.enabled": true,
+  "powershell.codeFolding.indicator": true,
+  "powershell.scriptAnalysis.enable": true,
+  
+  // Disable Git Bash and other alternative shells in terminal picker
+  "terminal.integrated.profiles.osx": {},
+  "terminal.integrated.profiles.linux": {}
+}

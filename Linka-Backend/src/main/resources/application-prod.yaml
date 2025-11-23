@@ -1,0 +1,147 @@
+# Railway Production Configuration
+# This file is specifically designed for Railway deployment
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:10MB}
+      max-request-size: ${MAX_REQUEST_SIZE:50MB}
+      resolve-lazily: true
+  compression:
+    enabled: true
+  http2:
+    enabled: true
+  forward-headers-strategy: native
+  error:
+    include-message: always
+    include-stacktrace: never
+    include-exception: false
+
+spring:
+  profiles:
+    active: prod
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DATABASE:0}
+
+  # Production Database Configuration (will be overridden by environment variables)
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 20000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+        format_sql: true
+    show-sql: false
+
+  # Production Mail Configuration
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: "*"
+
+# Production Logging Configuration
+logging:
+  level:
+    com.linka.backend: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    org.springframework.security: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: ${LOG_FILE_PATH:/var/log/linka/application.log}
+    max-size: ${LOG_MAX_FILE_SIZE:100MB}
+    max-history: ${LOG_MAX_HISTORY:30}
+  logback:
+    rollingpolicy:
+      max-file-size: ${LOG_MAX_FILE_SIZE:100MB}
+      max-history: ${LOG_MAX_HISTORY:30}
+      total-size-cap: ${LOG_TOTAL_SIZE_CAP:1GB}
+
+# Production Management/Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: never
+      show-components: never
+  prometheus:
+    metrics:
+      export:
+        enabled: ${PROMETHEUS_ENABLED:true}
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+
+# Production LinkA Configuration
+linka:
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration: ${JWT_EXPIRATION:86400000}
+    cors:
+      allowed-origins: ${CORS_ORIGINS:https://your-app.vercel.app,https://your-domain.com}
+    csrf:
+      enabled: ${CSRF_ENABLED:true}
+  mobile-money:
+    mtn:
+      min: ${MOBILE_MONEY_MTN_MIN:500}
+      max: ${MOBILE_MONEY_MTN_MAX:5000000}
+      fee: ${MOBILE_MONEY_MTN_FEE:0.01}
+    airtel:
+      min: ${MOBILE_MONEY_AIRTEL_MIN:500}
+      max: ${MOBILE_MONEY_AIRTEL_MAX:3000000}
+      fee: ${MOBILE_MONEY_AIRTEL_FEE:0.015}
+    mula:
+      min: ${MOBILE_MONEY_MULA_MIN:1000}
+      max: ${MOBILE_MONEY_MULA_MAX:2000000}
+      fee: ${MOBILE_MONEY_MULA_FEE:0.005}
+  rate-limiting:
+    enabled: ${RATE_LIMIT_ENABLED:true}
+    requests-per-minute: ${RATE_LIMIT_REQUESTS_PER_MINUTE:60}
+    burst-capacity: ${RATE_LIMIT_BURST_CAPACITY:100}
+  features:
+    debug-mode: false
+    dev-tools: false
+    email-enabled: ${EMAIL_ENABLED:true}
+    health-check-enabled: ${HEALTH_CHECK_ENABLED:true}
+    json-logging: ${JSON_LOGGING:true}
